@@ -57,57 +57,49 @@
 	document.forms["inscription"].addEventListener("submit", function(e) {
  
 	var erreur;
- 
+	var reg1=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ ;
 	var inputs = this;
- 
-	
- 
-	
-	var res = /^[a-zA-Z]+$/
-        if(!res.test(inputs[0].value+inputs[1].value)){
-            erreur = "must be alphabetic"
-        }
-var reg = /^\d+$/;
-        if(!reg.test(( inputs[3].value) || (inputs[3].value.length!=8 )){
-            erreur = "invalide phone number"
-        }
+	var res = /^[a-zA-Z\ ]+$/
+	var reg = /^\d+$/;
+	var empty = true;
+	for (var i = 0; i < inputs.length; i++) {
 
-for (var i = 0; i < inputs.length; i++) {
-		console.log(inputs[i]);
-		if (!inputs[i].value) {
+		if ((!inputs[i].value) && ( (inputs[i].type == "text") || (inputs[i].type == "email") ) ) {
 			erreur = "Veuillez renseigner tous les champs";
+			empty=false;
 			break;
 		}
 	}
-	
-var reg1=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ ;
+	if(empty){
+    	if(!res.test(inputs[0].value+inputs[1].value)){
+    	    erreur = "must be alphabetic"
+    	}
 
-if(!reg1.test(( inputs[4].value){
-            erreur = "invalide password"
-        }
-        if( inputs[4].value!=inputs[5].value)
-        {
-        	            erreur = "password and confirm password are not the same"
+    	if((!reg.test( inputs[3].value)) || (inputs[3].value.length!=8 )){
+    	    erreur = "invalide phone number"
+    	}
 
-        }
+		if(!reg1.test( inputs[4].value)){
+			erreur = "invalide password"
+		}
 
-if((! inputs[6].checked) && (! inputs[7].checked))
-{
-	erreur="you must slect your gender"
-}
+		if( inputs[4].value!=inputs[5].value){
+			erreur = "password and confirm password are not the same"
+
+		}
+
+		if((! inputs[6].checked) && (! inputs[7].checked))
+		{
+			erreur="you must slect your gender"
+		}
 
 
-for (var i = 0; i < inputs.length; i++) {
-		console.log(inputs[i]);
-		if (!inputs[i].value) {
-			erreur = "Veuillez renseigner tous les champs";
-			break;
+		//Validate Age
+		if(!reg.test( inputs[8].value)||(inputs[8].value<18)){
+			erreur="invlalid age "
 		}
 	}
-if(!reg.test(( inputs[8].value)||(inputs[8].value<18)){
-	erreur="invlalid age "
-}
-
+	//Writing Erreur
 	if (erreur) {
 		e.preventDefault();
 		document.getElementById("erreur").innerHTML = erreur;
