@@ -10,27 +10,27 @@
 	<h1 align="center">FORMULAIRE D'INSCRIPTION</h1>
 	<form method="POST" name="inscription">
 <label for=”user”>First Name:</label>
-<input id=”user” name=”FirstName ” placeholder=" must be alphabetic"> 
+<input id=”user” name=”FirstName ” placeholder=" must be alphabetic" value="azerazer"> 
 <br>
 <br>
 <label for=”user1”>Last Name:</label>
-<input id=”user1” name=”LastName” placeholder=" must be alphabetic" >
+<input id=”user1” name=”LastName” placeholder=" must be alphabetic" value="madnessisis" >
 <br>
 <br>
 <label for=”email”>Adresse E-mail:</label>
-<input type="email"  id=”email” name=”email” placeholder="E-mail"> 
+<input type="email"  id=”email” name=”email” placeholder="E-mail" value="ahahahah@gmai.com"> 
 <br>
 <br>
 <label for=”phone”>Phone number:</label>
-<input type="text"  id=”phone” name="Phone Number" placeholder=" must only be 8 numbers"> 
+<input type="text"  id=”phone” name="Phone Number" placeholder=" must only be 8 numbers" value="27442363"> 
 <br>
 <br>
 <label for=”pswd”> Password:</label>
-<input type="Password"  id=”pswd” name=" password" placeholder="should contain  uppercase, lowercase, special characters and a numbers"> 
+<input type="Password"  id=”pswd” name=" password" placeholder="should contain  uppercase, lowercase, special characters and a numbers" value="3asba11A&"> 
 <br>
 <br>
 <label for="pswd conf">  Password confirm:</label>
-<input type="Password"  id="pswd conf" name=" password confirm" placeholder="password"> 
+<input type="Password"  id="pswd conf" name=" password confirm" placeholder="password" value="3asba11A&"> 
 <br>
 <br>
 <div>Gender:</div>
@@ -39,26 +39,59 @@
 <label for="Male">Male</label>
 <br>
 <br>
-<input type="radio" id="Female" name="gender">
+<input type="radio" id="Female" name="gender" checked>
 <label for="Female">female</label>
 <br>
 <br>
 <label for="Age">Age:</label>
-<input type="text"  id="Age" name="Age" placeholder="age should be >= 18"> 
+<input type="text"  id="Age" name="Age" placeholder="age should be >= 18" value="19"> 
 <br>
 <br>
-<input type="submit" value="Inscription">
+<input id="addbutton" onclick="add()" type="button" value="Inscription">
+<p id="updateid" style="display: none;"></p>
+<input id="updatebutton" type="button" value="Update" style="display: none;" onclick="updateline()">
+
 </form>
 <p style="color: red;" id="erreur"></p>
 
 
+<table id="table" border="1">
+     <tr >
+       <th>First Name</th>
+       <th>Last Name</th>
+       <th>Adresse E-mail</th>
+       <th>Phone number</th>
+       <th>Password</th>
+       <th>Age</th>
+          <th>Age</th>
+          <th>Delete</th>
+          <th>Update</th>
+     </tr> 
+
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
 </body>
 <script>
-	document.forms["inscription"].addEventListener("submit", function(e) {
- 
+
+ function Verify() {
+                 table = document.getElementById("table");
+                 var form = document.inscription
+                 var nline=0;
 	var erreur;
+    var no_Errors;
 	var reg1=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ ;
-	var inputs = this;
+	var inputs = form;
 	var res = /^[a-zA-Z\ ]+$/
 	var reg = /^\d+$/;
 	var empty = true;
@@ -101,14 +134,111 @@
 	}
 	//Writing Erreur
 	if (erreur) {
-		e.preventDefault();
 		document.getElementById("erreur").innerHTML = erreur;
 		return false;
-	} else {
-		alert('Formulaire envoyé !');
-	}
-	
-});
 
+	} else {
+		return true;
+        
+	
+}
+}
+function add(){
+	if (Verify()) {
+		var nline=0;
+	let inputs = document.inscription;
+	let table = document.getElementById("table")
+        let line = document.createElement('tr');
+        line.setAttribute("id","line"+nline);
+        
+        gender = inputs[6].checked ? "Male":"Female";
+        values = [inputs[0].value,inputs[1].value,inputs[2].value,inputs[3].value,inputs[4].value,gender,inputs[8].value]
+        for(let j=0;j<values.length;j++){
+            let row=document.createElement("td");
+            row.innerHTML = values[j];
+            console.log(values[j])
+            line.append(row)
+        }
+
+
+        let Delel = document.createElement("button");
+        Delel.setAttribute("onclick","deleteel('line"+nline+"')");
+        Delel.innerHTML="Delete";
+
+
+        let update = document.createElement("button");
+        update.setAttribute("onclick","updateel('line"+nline+"')");
+        update.innerHTML="Update";
+
+
+        let row=document.createElement("td");
+            row.append(Delel);
+        let    row1=document.createElement("td");
+            row1.append(update);
+        line.append(row);
+        line.append(row1);
+
+        table.append(line);
+        nline++;
+
+
+
+		
+	}
+
+}
+
+function deleteel(id){
+	let element = document.getElementById(id);
+	element.remove();
+}
+
+function updateel(id){
+	document.getElementById("updateid").innerHTML = id;
+	const form = document.inscription;
+	let values = document.getElementById(id).getElementsByTagName("td")
+	form[0].value = values[0].innerHTML;
+	form[1].value = values[1].innerHTML;
+	form[2].value = values[2].innerHTML;	
+	form[3].value = values[3].innerHTML;	
+	form[4].value = values[4].innerHTML;	
+	form[5].value = values[4].innerHTML;
+	if(values[5].innerHTML == "Male"){
+		form[6].checked = true;
+	}
+	else{
+		form[7].checked = true;
+
+	}
+	form[8].value = values[6].innerHTML;
+	document.getElementById("updatebutton").style.display = "block";
+	document.getElementById("addbutton").style.display = "none"
+
+
+}
+function updateline(){
+	let id = document.getElementById("updateid").innerHTML;
+	const form = document.inscription;
+	let values = document.getElementById(id).getElementsByTagName("td")
+
+	if(Verify()){
+		values[0].innerHTML = form[0].value;
+	values[1].innerHTML = form[1].value;
+	values[2].innerHTML = form[2].value;
+	values[3].innerHTML = form[3].value;
+	values[4].innerHTML = form[4].value;
+	if(form[6].checked){
+		values[5].innerHTML = "Male";
+	}
+	else{
+		values[5].innerHTML = "Female"
+	}
+	values[6].innerHTML = form[8].value;
+	document.getElementById("updatebutton").style.display = "none";
+	document.getElementById("addbutton").style.display = "block"
+	}
+
+
+}
 </script>
 </html>
